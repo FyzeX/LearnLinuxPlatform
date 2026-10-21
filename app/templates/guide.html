@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}{{ guide.title }} — руководства{% endblock %}
+
+{% block content %}
+<nav class="breadcrumb"><a href="/">Главная</a> / <a href="/guides">Руководства</a> / {{ guide.title }}</nav>
+
+<article class="guide-page">
+  <header>
+    <span class="tag">{{ guide.category }}</span>
+    <h1>{{ guide.icon }} {{ guide.title }}</h1>
+    <p class="lead muted">{{ guide.summary }}</p>
+  </header>
+
+  <div class="notice-banner">🚧 Руководство — <b>заглушка</b>. Пошаговое содержание с командами появится позже.</div>
+
+  <section class="card placeholder-block">
+    <h2>Содержание</h2>
+    <div class="skeleton"><i></i><i></i><i></i><i></i><i></i></div>
+  </section>
+</article>
+{% endblock %}

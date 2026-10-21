@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}{{ track.name }} — LinuxDevOps{% endblock %}
+
+{% block content %}
+<nav class="breadcrumb"><a href="/">Главная</a> / <a href="/#tracks">Треки</a> / {{ track.name }}</nav>
+
+<section class="track-hero" style="--tc: {{ track.color }}">
+  <span class="track-icon big">{{ track.icon }}</span>
+  <div>
+    <h1>{{ track.name }}</h1>
+    <p class="muted">{{ lessons|length }} уроков · пройдено {{ lessons|selectattr('completed')|list|length }}</p>
+    <div class="progress-bar"><div class="progress-fill"
+      style="width: {{ (lessons|selectattr('completed')|list|length * 100 / (lessons|length or 1))|round|int }}%; background: var(--tc)"></div></div>
+  </div>
+</section>
+
+<div class="notice-banner">🚧 Трек в разработке — уроки являются заглушками. Контент появится позже.</div>
+
+<ol class="lesson-list">
+  {% for l in lessons %}
+  <li class="card lesson-row {{ 'done' if l.completed }}">
+    <label class="check" title="Отметить пройденным">
+      <input type="checkbox" class="lesson-toggle" data-slug="{{ l.slug }}" {{ 'checked' if l.completed }}>
+      <span class="box"></span>
+    </label>
+    <a class="lesson-main" href="/lesson/{{ l.slug }}">
+      <b>{{ loop.index }}. {{ l.title }}</b>
+      <span class="muted">≈ {{ l.est_min }} мин · <em class="stub-inline">заглушка</em></span>
+    </a>
+    <a class="btn btn-ghost btn-sm" href="/lesson/{{ l.slug }}">Открыть</a>
+  </li>
+  {% endfor %}
+</ol>
+{% endblock %}
+
+{% block scripts %}<script src="{{ url_for('static', filename='js/progress.js') }}"></script>{% endblock %}

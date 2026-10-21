@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}{{ lesson.title }} — LinuxDevOps{% endblock %}
+
+{% block content %}
+<nav class="breadcrumb">
+  <a href="/">Главная</a> / <a href="/#tracks">Треки</a> /
+  <a href="/tracks/{{ lesson.track_key }}">{{ lesson.track_name }}</a> / {{ lesson.title }}
+</nav>
+
+<article class="lesson-page">
+  <header class="lesson-header" style="--tc: {{ lesson.track_color }}">
+    <span class="tag" style="background: var(--tc)">Урок {{ lesson.position + 1 }}</span>
+    <h1>{{ lesson.title }}</h1>
+    <p class="muted">{{ lesson.track_name }} · ≈ {{ lesson.est_min }} минут</p>
+  </header>
+
+  <div class="notice-banner">
+    🚧 <b>Заглушка.</b> Материалы урока появятся позже.
+    Платформа не имеет виртуальных машин — практикуйте команды локально в своём терминале (Linux, macOS или WSL).
+  </div>
+
+  <section class="card placeholder-block">
+    <h2>📄 Теория</h2>
+    <p class="muted">Здесь будет конспект урока: объяснение темы, примеры и иллюстрации.</p>
+    <div class="skeleton"><i></i><i></i><i></i><i></i></div>
+  </section>
+
+  <section class="card placeholder-block">
+    <h2>⌨️ Практика — выполняйте локально</h2>
+    <p class="muted">Примеры команд (содержание появится позже). Нажмите «копировать» и вставьте в свой терминал:</p>
+    <div class="code-stub">
+      <pre>$ # пример будущей команды
+$ echo "hello, linux"</pre>
+      <button class="copy-btn" onclick="navigator.clipboard.writeText('echo \"hello, linux\"')">Копировать</button>
+    </div>
+  </section>
+
+  <footer class="lesson-footer card">
+    <label class="check big">
+      <input type="checkbox" class="lesson-toggle" data-slug="{{ lesson.slug }}" {{ 'checked' if lesson.completed }}>
+      <span class="box"></span> Урок пройден
+    </label>
+    <a class="btn btn-outline" href="/tracks/{{ lesson.track_key }}">← К треку</a>
+  </footer>
+</article>
+{% endblock %}
+
+{% block scripts %}<script src="{{ url_for('static', filename='js/progress.js') }}"></script>{% endblock %}
