@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Руководства — LinuxDevOps{% endblock %}
+
+{% block content %}
+<div class="section-head">
+  <h1 class="page-title">📘 Руководства</h1>
+  <p class="muted">Подготовка окружения: установка WSL, Ubuntu, настройка терминала, SSH и серверов.
+     Платформа не запускает виртуальные машины — всё ставится локально на вашу ОС.</p>
+</div>
+
+<div class="guide-cats">
+  {% for c in cats %}<a class="tag link" href="#cat-{{ c }}">{{ c }}</a>{% endfor %}
+</div>
+
+{% for c in cats %}
+<section class="guide-cat" id="cat-{{ c }}">
+  <h2 class="cat-title">{{ c }}</h2>
+  <div class="grid grid-guides">
+    {% for g in guides if g.category == c %}
+    <a class="card guide-card" href="/guide/{{ g.slug }}" id="{{ g.slug }}">
+      <span class="guide-icon">{{ g.icon }}</span>
+      <h3>{{ g.title }}</h3>
+      <p class="muted">{{ g.summary }}</p>
+      <span class="stub-badge">заглушка</span>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endfor %}
+{% endblock %}

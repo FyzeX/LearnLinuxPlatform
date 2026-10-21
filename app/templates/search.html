@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Поиск — LinuxDevOps{% endblock %}
+
+{% block content %}
+<div class="section-head">
+  <h1 class="page-title">🔎 Поиск</h1>
+  {% if query %}<p class="muted">По запросу «<b>{{ query }}</b>» найдено:
+    уроков — {{ results.lessons|length }}, руководств — {{ results.guides|length }}, треков — {{ results.tracks|length }}</p>
+  {% else %}<p class="muted">Введите запрос в строке поиска сверху.</p>{% endif %}
+</div>
+
+{% if results.tracks %}
+<h2>Треки</h2>
+<div class="grid grid-tracks sm">
+  {% for t in results.tracks %}
+  <a class="card track-card" href="/tracks/{{ t.key }}">{{ t.icon }} {{ t.name }}</a>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% if results.lessons %}
+<h2>Уроки</h2>
+<ol class="lesson-list">
+  {% for l in results.lessons %}
+  <li class="card lesson-row">
+    <span class="check disabled"><span class="box"></span></span>
+    <a class="lesson-main" href="/lesson/{{ l.slug }}"><b>{{ l.title }}</b>
+      <span class="muted">{{ l.track_name }} · заглушка</span></a>
+  </li>
+  {% endfor %}
+</ol>
+{% endif %}
+
+{% if results.guides %}
+<h2>Руководства</h2>
+<div class="grid grid-guides">
+  {% for g in results.guides %}
+  <a class="card guide-card" href="/guide/{{ g.slug }}">
+    <span class="guide-icon">{{ g.icon }}</span><h3>{{ g.title }}</h3>
+    <p class="muted">{{ g.summary }}</p>
+  </a>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% if query and not results.lessons and not results.guides and not results.tracks %}
+<div class="card empty-state">😕 Ничего не найдено. Попробуйте другой запрос.</div>
+{% endif %}
+{% endblock %}

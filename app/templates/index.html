@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% block title %}LinuxDevOps — платформа для изучения Linux и DevOps{% endblock %}
+
+{% block content %}
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <p class="eyebrow">🐧 Linux · 🐳 Docker · ⚙️ CI/CD · ☸️ Kubernetes</p>
+    <h1>Изучай Linux и&nbsp;DevOps<br><span class="accent">в собственном терминале</span></h1>
+    <p class="lead">Пошаговые треки, руководства по подготовке окружения (WSL, Ubuntu, SSH),
+       помидоро-таймер и трекер прогресса. Никаких виртуальных машин —
+       все команды вы запускаете локально на своей ОС.</p>
+    <div class="hero-actions">
+      <a href="#tracks" class="btn btn-primary btn-lg">Начать обучение</a>
+      <a href="/guides#wsl-install" class="btn btn-outline btn-lg">Установить WSL</a>
+    </div>
+    <div class="hero-stats">
+      <div><b>{{ tracks|sum(attribute='total') }}</b><span>уроков в планах</span></div>
+      <div><b>{{ tracks|length }}</b><span>треков</span></div>
+      <div><b>{{ stats.streak }}</b><span>дней подряд 🔥</span></div>
+    </div>
+  </div>
+
+  <!-- мини-вид терминала -->
+  <div class="terminal-card" aria-hidden="true">
+    <div class="term-bar"><i></i><i></i><i></i><span>guest@localhost: ~</span></div>
+    <pre class="term-body">$ whoami
+guest
+$ uname -sr
+Linux 6.8.0-generic
+$ ls ~/learning
+bash-scripting/   docker/   git/   kubernetes/
+$ echo "Ready to learn?"
+Ready to learn? <span class="cursor">▋</span></pre>
+  </div>
+</section>
+
+<!-- QUICK WIDGETS -->
+<section class="widgets-row" id="tools">
+  {% include "_pomodoro.html" %}
+  <div class="card tracker-card">
+    <div class="card-head">
+      <h2>🎯 Трекер привычек</h2>
+      <span class="muted">ежедневная цель</span>
+    </div>
+    <div class="tracker-goal">
+      <label>Минимум в день:
+        <select id="dailyGoal" class="input input-sm">
+          <option value="15">15 мин</option>
+          <option value="25" selected>25 мин</option>
+          <option value="50">50 мин</option>
+          <option value="120">2 часа</option>
+        </select>
+      </label>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Сегодня: <b id="todayMinutes">0</b> мин</span><span id="goalPct">0%</span></div>
+      <div class="progress-bar"><div class="progress-fill" id="todayFill"></div></div>
+    </div>
+    <ul class="tasks-list" id="tasksList"></ul>
+    <form class="task-add" id="taskForm">
+      <input class="input" id="taskInput" placeholder="Новая задача / что изучить сегодня…" maxlength="200">
+      <button class="btn btn-primary btn-sm" type="submit">＋</button>
+    </form>
+  </div>
+</section>
+
+<!-- CONTRIB HEATMAP -->
+<section class="card heatmap-card" id="consistency">
+  <div class="card-head">
+    <h2>📅 Постоянство занятий</h2>
+    <div class="seg" id="heatmapRange">
+      <button class="seg-btn active" data-weeks="26">6 мес</button>
+      <button class="seg-btn" data-weeks="53">Год</button>
+    </div>
+  </div>
+  <div class="heatmap-scroll"><div id="heatmap"></div></div>
+  <div class="heatmap-legend">
+    <span>Всего за период: <b id="heatTotal">0</b> уроков · <b id="heatMinutes">0</b> мин</span>
+    <span class="legend-scale">Меньше
+      <i class="cell lv-0"></i><i class="cell lv-1"></i><i class="cell lv-2"></i><i class="cell lv-3"></i><i class="cell lv-4"></i>
+      Больше</span>
+  </div>
+</section>
+
+<!-- TRACKS -->
+<section id="tracks">
+  <div class="section-head">
+    <h1 class="page-title">Треки обучения</h1>
+    <p class="muted">Контент уроков появится позже — сейчас это структурированные заглушки.</p>
+  </div>
+  <div class="grid grid-tracks">
+    {% for t in tracks %}
+    <a class="card track-card" href="/tracks/{{ t.key }}">
+      <div class="track-top">
+        <span class="track-icon" style="--tc: {{ t.color }}">{{ t.icon }}</span>
+        <h3>{{ t.name }}</h3>
+      </div>
+      <div class="track-meta muted">{{ t.done }} / {{ t.total }} уроков пройдено</div>
+      <div class="progress-bar sm"><div class="progress-fill"
+           style="width: {{ (t.done * 100 / (t.total or 1))|round|int }}%; background: {{ t.color }}"></div></div>
+      <span class="stub-badge">заглушка</span>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- GUIDES PREVIEW -->
+<section class="guides-preview">
+  <div class="section-head row">
+    <h2>📘 Руководства по настройке окружения</h2>
+    <a href="/guides" class="btn btn-ghost">Все руководства →</a>
+  </div>
+  <div class="grid grid-guides">
+    <a class="card guide-card featured" href="/guide/wsl-install">
+      <span class="guide-icon">🪟</span>
+      <h3>Установка WSL 2</h3>
+      <p class="muted">Windows Subsystem for Linux: включение, Ubuntu, терминал, VS Code.</p>
+      <span class="tag">windows</span>
+    </a>
+    <a class="card guide-card" href="/guide/ubuntu-install">
+      <span class="guide-icon">🐧</span><h3>Установка Ubuntu</h3>
+      <p class="muted">dual-boot и первые настройки.</p><span class="tag">linux</span>
+    </a>
+    <a class="card guide-card" href="/guide/ssh-keys">
+      <span class="guide-icon">🔐</span><h3>SSH-ключи</h3>
+      <p class="muted">Доступ к серверам без пароля.</p><span class="tag">security</span>
+    </a>
+    <a class="card guide-card" href="/guide/nginx-local">
+      <span class="guide-icon">🚦</span><h3>Nginx локально</h3>
+      <p class="muted">Конфигурация и reverse proxy.</p><span class="tag">servers</span>
+    </a>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/pomodoro.js') }}"></script>
+<script src="{{ url_for('static', filename='js/heatmap.js') }}"></script>
+<script src="{{ url_for('static', filename='js/tracker.js') }}"></script>
+{% endblock %}

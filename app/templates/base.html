@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}LinuxDevOps — платформа обучения{% endblock %}</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐧</text></svg>">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<script>
+  // Тема применяем до отрисовки, чтобы не было "мигания"
+  (function () {
+    var t = localStorage.getItem('theme');
+    if (!t) t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    document.documentElement.dataset.theme = t;
+  })();
+</script>
+</head>
+<body>
+
+<!-- ======================= STICKY HEADER ======================= -->
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="logo" href="/">
+      <span class="logo-mark">🐧</span>
+      <span class="logo-text"><b>Linux</b><i>DevOps</i><small>.academy</small></span>
+    </a>
+
+    <nav class="main-nav" id="mainNav">
+      <a href="/" class="{{ 'active' if page=='home' }}">Главная</a>
+      <a href="/#tracks" class="{{ 'active' if page=='tracks' }}">Треки</a>
+      <a href="/guides" class="{{ 'active' if page=='guides' }}">Руководства</a>
+      <a href="/dashboard" class="{{ 'active' if page=='dashboard' }}">Прогресс</a>
+    </nav>
+
+    <!-- Поиск + живые подсказки -->
+    <div class="search-box" id="searchBox">
+      <form action="/search" method="get" autocomplete="off">
+        <svg viewBox="0 0 16 16" width="15" height="15" class="search-icon"><path fill="currentColor" d="M10.68 11.74a6 6 0 1 1-.94-8.5 6 6 0 0 1 8.5.94 6.02 6.02 0 0 1-6.9 6.9 6 6 0 0 1-.66.66ZM11.5 11.5 14 14"/></svg>
+        <input type="search" name="q" id="searchInput" placeholder="Поиск уроков и руководств…"
+               value="{{ query or '' }}" aria-label="Поиск">
+        <kbd class="search-kbd">/</kbd>
+      </form>
+      <div class="search-dropdown hidden" id="searchDropdown"></div>
+    </div>
+
+    <div class="header-actions">
+      <button class="icon-btn" id="themeToggle" title="Переключить тему" aria-label="Переключить тему">
+        <span class="theme-icon-dark">🌙</span><span class="theme-icon-light">☀️</span>
+      </button>
+
+      {% if user.is_guest %}
+        <a href="/auth/login" class="btn btn-ghost">Войти</a>
+        <a href="/auth/register" class="btn btn-primary">Регистрация</a>
+      {% else %}
+        <a href="/dashboard" class="user-chip">👤 {{ user.username }}</a>
+        <a href="/auth/logout" class="btn btn-ghost">Выйти</a>
+      {% endif %}
+
+      <button class="icon-btn burger" id="burger" aria-label="Меню">☰</button>
+    </div>
+  </div>
+</header>
+
+<!-- ======================= CONTENT ======================= -->
+<main class="container site-main">
+  {% block content %}{% endblock %}
+</main>
+
+<!-- ======================= FOOTER ======================= -->
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div>
+      <span class="logo-mark">🐧</span> <b>LinuxDevOps</b>.academy — учись Linux и DevOps
+      в своём терминале. Платформа не запускает виртуальные машины: все команды выполняются локально на вашей ОС.
+    </div>
+    <div class="footer-links">
+      <a href="/guides">Руководства</a>
+      <a href="/dashboard">Прогресс</a>
+      <a href="/auth/register">Регистрация</a>
+    </div>
+    <div class="footer-note">© 2026 · v0.1 (MVP) · SQLite · nginx</div>
+  </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/common.js') }}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Вход' if mode=='login' else 'Регистрация' }} — LinuxDevOps{% endblock %}
+
+{% block content %}
+<div class="auth-wrap card">
+  <h1>{{ '🔑 Вход' if mode=='login' else '📝 Регистрация' }}</h1>
+  <p class="muted">Авторизация будет подключена на следующем этапе. Сейчас платформа работает
+     в демо-режиме с локальной базой данных (прогресс сохраняется для гостя).</p>
+
+  <form onsubmit="return false" class="auth-form">
+    {% if mode == 'register' %}
+    <label>Имя пользователя
+      <input class="input" type="text" placeholder="penguin_dev" disabled></label>
+    <label>Email
+      <input class="input" type="email" placeholder="you@example.com" disabled></label>
+    {% endif %}
+    <label>{{ 'Логин или email' if mode=='login' else 'Пароль' }}
+      <input class="input" type="{{ 'text' if mode=='login' else 'password' }}" placeholder="••••••••" disabled></label>
+    {% if mode == 'register' %}
+    <label>Подтверждение пароля
+      <input class="input" type="password" placeholder="••••••••" disabled></label>
+    {% endif %}
+    <button class="btn btn-primary btn-lg" disabled>{{ 'Войти' if mode=='login' else 'Создать аккаунт' }}</button>
+  </form>
+
+  <p class="auth-switch muted">
+    {% if mode == 'login' %}
+      Нет аккаунта? <a href="/auth/register">Зарегистрируйтесь</a>
+    {% else %}
+      Уже есть аккаунт? <a href="/auth/login">Войдите</a>
+    {% endif %}
+    · <a href="/">Продолжить как гость →</a>
+  </p>
+</div>
+{% endblock %}

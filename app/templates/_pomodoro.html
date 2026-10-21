@@ -1,0 +1,28 @@
+<div class="card pomo-card" id="pomodoroCard">
+  <div class="card-head">
+    <h2>🍅 Помидоро-таймер</h2>
+    <span class="muted">{{ stats.sessions }} сессий всего</span>
+  </div>
+
+  <div class="seg pomo-modes" id="pomoModes">
+    <button class="seg-btn active" data-mode="focus" data-min="25">Фокус 25</button>
+    <button class="seg-btn" data-mode="short" data-min="5">Перерыв 5</button>
+    <button class="seg-btn" data-mode="long" data-min="15">Перерыв 15</button>
+  </div>
+
+  <div class="pomo-ring-wrap">
+    <svg viewBox="0 0 120 120" class="pomo-ring">
+      <circle class="ring-bg" cx="60" cy="60" r="52"></circle>
+      <circle class="ring-fg" id="ringFg" cx="60" cy="60" r="52"></circle>
+    </svg>
+    <div class="pomo-time" id="pomoTime">25:00</div>
+  </div>
+
+  <div class="pomo-controls">
+    <button class="btn btn-primary" id="pomoStart">Старт</button>
+    <button class="btn btn-outline" id="pomoPause" disabled>Пауза</button>
+    <button class="btn btn-ghost" id="pomoReset">Сброс</button>
+  </div>
+  <div class="pomo-dots" id="pomoDots" title="помидоро до большого перерыва"></div>
+  <audio id="pomoBell" preload="none" src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA="></audio>
+</div>

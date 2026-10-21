@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Мой прогресс — LinuxDevOps{% endblock %}
+
+{% block content %}
+<div class="section-head row">
+  <h1 class="page-title">📈 Мой прогресс</h1>
+  <span class="muted">демо-режим: данные сохраняются в локальной SQLite (гость)</span>
+</div>
+
+<div class="stat-cards" id="dashStats">
+  <div class="card stat"><b id="stLessons">–</b><span>уроков пройдено</span></div>
+  <div class="card stat"><b id="stMinutes">–</b><span>минут фокуса</span></div>
+  <div class="card stat"><b id="stSessions">–</b><span>помидоро-сессий</span></div>
+  <div class="card stat"><b id="stStreak">–</b><span>дней подряд 🔥</span></div>
+</div>
+
+<section class="card heatmap-card">
+  <div class="card-head">
+    <h2>📅 Активность за год</h2>
+    <div class="seg" id="heatmapRange">
+      <button class="seg-btn active" data-weeks="26">6 мес</button>
+      <button class="seg-btn" data-weeks="53">Год</button>
+    </div>
+  </div>
+  <div class="heatmap-scroll"><div id="heatmap"></div></div>
+  <div class="heatmap-legend">
+    <span>Всего за период: <b id="heatTotal">0</b> уроков · <b id="heatMinutes">0</b> мин</span>
+    <span class="legend-scale">Меньше
+      <i class="cell lv-0"></i><i class="cell lv-1"></i><i class="cell lv-2"></i><i class="cell lv-3"></i><i class="cell lv-4"></i>
+      Больше</span>
+  </div>
+</section>
+
+<div class="dash-grid">
+  {% include "_pomodoro.html" %}
+
+  <section class="card">
+    <div class="card-head"><h2>🗂 Прогресс по трекам</h2></div>
+    <div id="trackProgress" class="track-progress-list"></div>
+  </section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/pomodoro.js') }}"></script>
+<script src="{{ url_for('static', filename='js/heatmap.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}
